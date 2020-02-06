@@ -1,0 +1,22 @@
+{
+  "name": "node-essentials",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishal8885/node-essentials.git"
+  },
+  "author": "Vishal Punzuri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vishal8885/node-essentials/issues"
+  },
+  "homepage": "https://github.com/vishal8885/node-essentials#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
