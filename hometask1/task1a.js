@@ -1,3 +1,9 @@
+/**
+ * Write a program which reads an array from the standard input stdin and implement a custom sort for this array in ascending and descending order (these are sent via command line args  by –mode flag as “asc” or “desc”)
+ * • The program should be started from npm script via nodemon (i.e. npm run <command>). 
+ * • The program should be running in a stand-by mode and should not be terminated after the first-string processing. 
+ */
+
 var readline = require("readline");
 
 if (process.argv.length === 2) {

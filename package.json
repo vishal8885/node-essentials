@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "task1": "nodemon task1.js"
+    "task1a": "nodemon hometask1/task1a.js",
+    "task1b": "nodemon hometask1/task1b.js",
+    "task1c": "nodemon hometask1/task1c.js"
   },
   "repository": {
     "type": "git",
