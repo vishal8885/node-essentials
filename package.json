@@ -6,7 +6,8 @@
   "scripts": {
     "task1a": "nodemon hometask1/task1a.js",
     "task1b": "nodemon hometask1/task1b.js",
-    "task1c": "nodemon hometask1/task1c.js"
+    "task1c": "nodemon hometask1/task1c.js",
+    "task1d": "nodemon hometask1/task1d.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,6 @@
   "homepage": "https://github.com/vishal8885/node-essentials#readme",
   "devDependencies": {
     "nodemon": "^2.0.2"
-  }
+  },
+  "dependencies": {}
 }
