@@ -16,7 +16,6 @@ router.get("/", (req, res) => {
                 const bookPrice = +book.price;
                 return (bookPrice >= startingPrice && bookPrice <= endingPrice);
             });
-            console.log(booksData);
         }
     }
     res.json(booksData);
@@ -36,26 +35,47 @@ router.get("/:id", (req, res) => {
     res.end();
 });
 
-router.post("/", (req, res) => {
+router.post("/", bookSchemaValidator, (req, res) => {
     const requestObject = req.body;
-    const { error, value } = bookSchema.validate(requestObject);
+    const booksData = JSON.parse(fs.readFileSync("books.json", 'utf8'));
+    booksData.push(requestObject);
+    fs.writeFile("books.json", JSON.stringify(booksData), (err) => {
+        if (err) {
+            res.status(400);
+            res.json(err);
+        } else {
+            res.json(requestObject);
+        }
+        res.end();
+    });
+});
+
+router.patch("/:ISBN" ,(req, res) => {
+    const id = req.params.ISBN;
+    const booksData = JSON.parse(fs.readFileSync("books.json", 'utf8'));
+    const book = booksData.find(({ISBN}) => id === ISBN);
+    book.authorName = "Adam Freeman";
+    fs.writeFile("books.json", JSON.stringify(booksData), (err) => {
+        if (err) {
+            res.status(400);
+            res.json(err);
+        } else {
+            res.json(book);
+        }
+        res.end();
+    });
+});
+
+function bookSchemaValidator(req, res, next) {
+    const requestObject = req.body;
+    const { error } = bookSchema.validate(requestObject);
     if (error) {
         res.status(400)
             .json(error.details);
             res.end();
     } else {
-        const booksData = JSON.parse(fs.readFileSync("books.json", 'utf8'));
-        booksData.push(requestObject);
-        fs.writeFile("books.json", JSON.stringify(booksData), (err) => {
-            if (err) {
-                res.status(400);
-                res.json(err);
-            } else {
-                res.json(requestObject);
-            }
-            res.end();
-        });
+        next();
     }
-});
+}
 
 module.exports = router;
