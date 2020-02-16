@@ -1,7 +1,7 @@
 var express = require('express'),
     router = express.Router();
 var fs = require("fs");
-
+var bookSchema = require('../models/books');
 
 router.get("/", (req, res) => {
     var booksData = JSON.parse(fs.readFileSync("books.json", 'utf8'));
@@ -34,6 +34,28 @@ router.get("/:id", (req, res) => {
         res.json({message: "No data found"});
     }
     res.end();
+});
+
+router.post("/", (req, res) => {
+    const requestObject = req.body;
+    const { error, value } = bookSchema.validate(requestObject);
+    if (error) {
+        res.status(400)
+            .json(error.details);
+            res.end();
+    } else {
+        const booksData = JSON.parse(fs.readFileSync("books.json", 'utf8'));
+        booksData.push(requestObject);
+        fs.writeFile("books.json", JSON.stringify(booksData), (err) => {
+            if (err) {
+                res.status(400);
+                res.json(err);
+            } else {
+                res.json(requestObject);
+            }
+            res.end();
+        });
+    }
 });
 
 module.exports = router;
