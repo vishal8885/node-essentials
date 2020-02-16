@@ -41,10 +41,18 @@ app.listen(port, () => {
 
 app.get("/books", (req, res) => {
     const yearToFind = req.query.year;
-    console.log(yearToFind);
+    const startingPrice = +req.query.pricestart;
+    const endingPrice = +req.query.priceend;
     var booksData = JSON.parse(fs.readFileSync("books.json", 'utf8'));
-    if (yearToFind) {
-        booksData = booksData.filter(({Published_year}) => yearToFind === Published_year);
+    if (Object.keys(req.query)) {
+        if (yearToFind) {
+            booksData = booksData.filter(({publishedYear}) => yearToFind === publishedYear);
+        } else if (startingPrice && endingPrice) {
+            booksData = booksData.filter((book) => {
+                const bookPrice = +book.price;
+                return (bookPrice >= startingPrice && bookPrice <= endingPrice);
+            });
+        }
     }
     res.json(booksData);
     res.end();
@@ -53,6 +61,12 @@ app.get("/books", (req, res) => {
 app.get("/books/:id", (req, res) => {
     const id = req.params.id;
     const booksData = JSON.parse(fs.readFileSync("books.json", 'utf8'));
-    res.json(booksData.find(({ISBN}) => id === ISBN));
+    const book = booksData.find(({ISBN}) => id === ISBN);
+    if (book) {
+        res.json(book);
+    } else {
+        res.status(404);
+        res.json({message: "No data found"});
+    }
     res.end();
 });
