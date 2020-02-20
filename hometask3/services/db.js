@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoDB = 'mongodb://127.0.0.1/bookdatabase';
+const mongoDB = 'mongodb://127.0.0.1/booksdb';
 mongoose.connect(mongoDB, { useNewUrlParser: true, autoIndex: false, poolSize: 10, keepAlive: true, keepAliveInitialDelay: true});
 
 const db = mongoose.connection;

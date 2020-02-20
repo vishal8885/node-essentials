@@ -30,7 +30,7 @@ async function readBooks(request, response) {
 
 async function readBookById(request, response) {
     try {
-        const responseFromServer = await booksModel.findById(request.params.id);
+        const responseFromServer = await booksModel.find({ISBN: request.params.id});
         response.status(200).send(responseFromServer).end();
     } catch(error) {
         response.status(500).send({error: 'Error in Reading Data !!'}).end();
