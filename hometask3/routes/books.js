@@ -1,20 +1,36 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bookService = require('./../services/bookService');
+const bookService = require("../services/bookService");
+const bookSchema = require("./../../models/books");
 
-const booksService = require('./../services/bookService');
-
-router.get('/', (request, response) => {
-    bookService.readBooks(request, response);
+router.get("/", (request, response) => {
+  bookService.readBooks(request, response);
 });
 
 router.get("/:id", (request, response) => {
-    bookService.readBookById(request, response);
+  bookService.readBookById(request, response);
 });
 
-/* router.post('/', (request, response) => {
-    console.log('request Reached to POST');
-    response.end();
-}); */
+router.post("/", bookSchemaValidator, (req, res) => {
+  bookService.addBook(req, res);
+});
 
+router.patch("/:ISBN", (req, res) => {
+  bookService.updateBookByID(req, res);
+});
+
+router.patch("/", (req, res) => {
+    bookService.updateToJohn(req, res);
+});
+
+function bookSchemaValidator(req, res, next) {
+  const requestObject = req.body;
+  const { error } = bookSchema.validate(requestObject);
+  if (error) {
+    res.status(400).json(error.details);
+    res.end();
+  } else {
+    next();
+  }
+}
 module.exports = router;

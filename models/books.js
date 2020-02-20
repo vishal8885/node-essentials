@@ -2,7 +2,7 @@ const Joi = require("@hapi/joi");
 
 const schema = Joi.object({
   bookName: Joi.string(),
-  ISBN: Joi.number().min(3),
+  ISBN: [Joi.number().min(3), Joi.required()],
   publisherName: Joi.string(),
   authorName: Joi.string(),
   authorId: Joi.number(),
