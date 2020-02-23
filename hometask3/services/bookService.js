@@ -90,11 +90,25 @@ async function getAuthorsByPincode(req, res) {
   authorService.getAuthorsByPincode(req, res);
 }
 
+async function getBooksAndAuthors(req, res) {
+  const result = await booksModel.aggregate([{
+    $lookup: {
+      from: "authors",
+      localField: "authorId",
+      foreignField: "authorId",
+      as: "author_details"
+  }
+  }]);
+  res.send(result);
+  res.end();
+}
+
 module.exports = { readBooks, 
     readBookById,
     addBook, 
     updateBookByID,
     updateToJohn,
     deleteBookByISBN,
-    getAuthorsByPincode
+    getAuthorsByPincode,
+    getBooksAndAuthors
   };

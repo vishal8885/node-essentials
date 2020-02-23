@@ -31,6 +31,10 @@ router.get("/pincode/:pin", (req, res) => {
   bookService.getAuthorsByPincode(req, res);
 });
 
+router.get("/authors", (req, res) => {
+  bookService.getBooksAndAuthors(req, res);
+});
+
 function bookSchemaValidator(req, res, next) {
   const requestObject = req.body;
   const { error } = bookSchema.validate(requestObject);
