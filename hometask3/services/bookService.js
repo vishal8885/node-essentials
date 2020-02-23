@@ -1,5 +1,5 @@
-const db = require("./db");
 const booksModel = require("../models/books");
+const authorService = require("./authorService");
 
 async function readBooks(request, response) {
   try {
@@ -67,16 +67,34 @@ async function updateBookByID(req, res) {
   res.end();
 }
 
-async function updateToJohn(req, res) {
-    const re = await booksModel.find({authorName: "John Papa"})
-    .sort({publishedYear: 1})
-    .limit(4)
-    .skip(2)
-    res.send(re);
-    res.end();
+async function deleteBookByISBN(req, res) {
+  await booksModel.deleteOne({ISBN: req.params.ISBN});
+  res.end();
 }
+
+async function updateToJohn(req, res) {
+    await booksModel.find({authorName: "John Papa"})
+    .sort({publishedYear: 1})
+    .skip(2)
+    .limit(2).exec((err, books) => {
+
+      var q = booksModel.updateMany({_id: {$in: books}}, {authorName: "John"});
+  
+      q.exec(err => {
+        res.end();
+      });
+    });
+}
+
+async function getAuthorsByPincode(req, res) {
+  authorService.getAuthorsByPincode(req, res);
+}
+
 module.exports = { readBooks, 
     readBookById,
     addBook, 
     updateBookByID,
-    updateToJohn };
+    updateToJohn,
+    deleteBookByISBN,
+    getAuthorsByPincode
+  };

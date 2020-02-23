@@ -23,6 +23,14 @@ router.patch("/", (req, res) => {
     bookService.updateToJohn(req, res);
 });
 
+router.delete("/:ISBN", (req, res) => {
+  bookService.deleteBookByISBN(req, res);
+});
+
+router.get("/pincode/:pin", (req, res) => {
+  bookService.getAuthorsByPincode(req, res);
+});
+
 function bookSchemaValidator(req, res, next) {
   const requestObject = req.body;
   const { error } = bookSchema.validate(requestObject);
