@@ -91,14 +91,48 @@ async function getAuthorsByPincode(req, res) {
 }
 
 async function getBooksAndAuthors(req, res) {
-  const result = await booksModel.aggregate([{
+  console.log('aggregate');
+  const result = await booksModel.aggregate([
+    {
+      $match: { 
+        price: { $gte: "100", $lt: "500" },
+        publishedYear: { $gte: "2015", $lte: "2020"}
+      }
+    },
+    { $sort: { price: -1 } },
+    {
     $lookup: {
-      from: "authors",
-      localField: "authorId",
-      foreignField: "authorId",
-      as: "author_details"
-  }
-  }]);
+        from: "authors",
+        localField: "authorId",
+        foreignField: "authorId",
+        as: "authorDetails"
+      }
+    },
+    { "$unwind": "$authorDetails" },
+    {
+      $lookup: {
+          from: "books",
+          localField: "authorDetails.authorId",
+          foreignField: "authorId",
+          as: "authorDetails.books"
+      }
+    },
+    {
+      "$group": {
+          _id: "$bookName",
+          "bookName": { "$first": "$bookName" },
+          "price": { "$first": "$price" },
+          "year": { "$first": "$publishedYear"},
+          "authorId": { "$first": "$authorId"},
+          "authorDetails": { "$first": {
+            "authorInformation": "$authorDetails",
+            "books": "$authorDetails.books"}
+          },
+      }
+    },
+  ]);
+
+
   res.send(result);
   res.end();
 }
