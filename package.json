@@ -8,7 +8,8 @@
     "task1b": "nodemon hometask1/task1b.js",
     "task1c": "nodemon hometask1/task1c.js",
     "task1d": "nodemon hometask1/task1d.js",
-    "task3": "nodemon hometask3/app.js"
+    "task3": "nodemon hometask3/app.js",
+    "task4": "nodemon hometask4/app.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
     "@hapi/joi": "^17.1.0",
     "express": "^4.17.1",
     "httpdispatcher": "^2.1.2",
-    "mongoose": "^5.9.1"
+    "mongoose": "^5.9.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.5"
   }
 }
