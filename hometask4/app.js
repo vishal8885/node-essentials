@@ -1,6 +1,8 @@
-var { Sequelize, DataTypes } = require("sequelize");
+var { Sequelize } = require("sequelize");
 var express = require("express");
 const app = express();
+
+var personRoute = require("./routes/person");
 
 const port = 3000;
 
@@ -9,28 +11,19 @@ app.use(express.static('public'));
 app.use(express.urlencoded());
 app.use(express.raw({limit: '10mb'}))
 
+app.use("/person", personRoute);
+
 const sequelize = new Sequelize('booksdb', 'root', 'root', {
     host: 'localhost',
     dialect: 'mysql'
 });
 
-const person = sequelize.define('person', {
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    id: {
-        type: DataTypes.STRING,
-        defaultValue: Sequelize.UUIDV4
-    },
-    skills: {
-        type: DataTypes.ARRAY
-    }
-});
+var Person = sequelize.import("./models/person");
 
 (async function () {
     try {
         await sequelize.authenticate();
+        await Person.sync();
         app.listen(port, () => {
             console.log('server listening on port ', port);
         })
