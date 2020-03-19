@@ -11,7 +11,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded());
 app.use(express.raw({limit: '10mb'}))
 
-app.use("/person", personRoute);
+app.use("/people", personRoute);
 
 const sequelize = new Sequelize('booksdb', 'root', 'root', {
     host: 'localhost',
@@ -23,7 +23,7 @@ var Person = sequelize.import("./models/person");
 (async function () {
     try {
         await sequelize.authenticate();
-        await Person.sync();
+        // await Person.sync();
         app.listen(port, () => {
             console.log('server listening on port ', port);
         })
