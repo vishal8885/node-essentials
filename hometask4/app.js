@@ -13,9 +13,11 @@ app.use(express.raw({limit: '10mb'}))
 
 app.use("/people", personRoute);
 
+
 const sequelize = new Sequelize('booksdb', 'root', 'root', {
     host: 'localhost',
-    dialect: 'mysql'
+    dialect: 'mysql',
+    operatorsAliases: Sequelize.Op.Aliases
 });
 
 var Person = sequelize.import("./models/person");

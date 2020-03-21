@@ -14,4 +14,8 @@ router.post('/skills', (req, res) => {
     personService.addPerson(req, res);
 });
 
+router.post('/bestskilled', (req, res) => {
+    personService.getBestSkilled(req, res);
+});
+
 module.exports = router;

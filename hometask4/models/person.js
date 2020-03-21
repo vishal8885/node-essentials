@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         type: DataTypes.STRING,
         defaultValue: Sequelize.UUIDV4,
-        primaryKey: true
+        primaryKey: true,
       },
       skills: {
         type: DataTypes.STRING,
@@ -20,6 +20,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         set: function(val) {
           return this.setDataValue("skills", JSON.stringify(val));
+        },
+        validate: {
+          fn: function (value) {
+            const skills = JSON.parse(value);
+            if (skills.length === 0) {
+              throw new Error("Skills cannot be empty");
+            }
+          }
         }
       }
     },

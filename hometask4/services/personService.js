@@ -1,5 +1,5 @@
 var models = require("../models")
-
+var { Op  } = require("sequelize");
 
 async function getAllPersons(req, res) {
     models.Person.findAll().then(data => {
@@ -16,19 +16,33 @@ async function getPersonByID(req, res) {
 }
 
 async function addPerson(req, res) {
-    const newPerson  = req.body;
-    if (!newPerson.skills || newPerson.skills.length === 0) {
-        res.status(422);
-        res.send({error: "skills required"});
-    } else {
-        models.Person.create(req.body);
+    models.Person.create(req.body).then((data) => {
+        res.status(201);
         res.send(newPerson);
-    }
-    res.end();
+        res.end();
+    })
+    .catch(({errors}) => {
+        res.send(errors);
+        res.end();
+    });
+}
+
+async function getBestSkilled (req, res) {
+    models.Person.findAll({
+        where: {
+            skills: {
+                [Op.in]: req.body.Skills
+            }
+        }
+    }).then(data => {
+        res.send(data);
+        res.end();
+    });
 }
 
 module.exports = {
     getAllPersons,
     addPerson,
-    getPersonByID
+    getPersonByID,
+    getBestSkilled
 }
